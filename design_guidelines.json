@@ -1,0 +1,150 @@
+{
+  "brand_identity": {
+    "name": "SplitSync",
+    "description": "A minimalist, friction-free bill splitting tool for modern friendships.",
+    "emotional_archetype": "The Digital Receipt",
+    "core_values": ["Clarity", "Speed", "Trust", "Modernity"],
+    "voice": "Direct, precise, slightly playful (receipt printer humor)"
+  },
+  "typography": {
+    "heading": {
+      "family": "Inter, sans-serif",
+      "weights": ["600", "800"],
+      "tracking": "-0.02em",
+      "usage": "Use tight tracking for all headings. Bold for emphasis."
+    },
+    "body": {
+      "family": "Inter, sans-serif",
+      "weights": ["400", "500"],
+      "usage": "Clean, legible at small sizes."
+    },
+    "mono": {
+      "family": "JetBrains Mono, monospace",
+      "weights": ["400", "500"],
+      "usage": "ALL currency values, dates, and transaction IDs must use this font to evoke a receipt aesthetic."
+    }
+  },
+  "colors": {
+    "theme": "light",
+    "palette": {
+      "background": "#FBFBFD",
+      "foreground": "#18181B",
+      "card": "#FFFFFF",
+      "card_foreground": "#18181B",
+      "primary": "#18181B",
+      "primary_foreground": "#FFFFFF",
+      "muted": "#F4F4F5",
+      "muted_foreground": "#71717A",
+      "border": "#E4E4E7",
+      "input": "#E4E4E7",
+      "ring": "#18181B",
+      "accents": {
+        "blue": "#3B82F6",
+        "emerald": "#10B981",
+        "rose": "#F43F5E",
+        "violet": "#8B5CF6",
+        "orange": "#F97316"
+      }
+    },
+    "usage_rules": [
+      "Use monochrome (Black/White/Greys) for 90% of the UI.",
+      "Use accents ONLY for status (Owed/Owes) or User Avatars.",
+      "Never use gradients for backgrounds. Keep it flat and paper-like."
+    ]
+  },
+  "spacing_and_layout": {
+    "scale": "tailwind",
+    "container_padding": "p-4 md:p-8 lg:p-12",
+    "grid_gap": "gap-4 md:gap-6",
+    "radius": {
+      "default": "0.5rem",
+      "card": "0.75rem",
+      "button": "9999px"
+    },
+    "strategies": [
+      "Mobile: Single column card stack.",
+      "Desktop: Bento Grid. Sidebar (Nav) + Main Content (Feed) + Right Panel (Summary).",
+      "Whitespace: Use relaxed spacing. Don't crowd the data."
+    ]
+  },
+  "visual_enhancers": {
+    "shadows": "shadow-sm hover:shadow-md transition-shadow duration-200",
+    "borders": "border border-border/60",
+    "textures": "Add a subtle noise texture to the background if possible (opacity 0.02).",
+    "glassmorphism": "Use backdrop-blur-md for sticky headers and modals, but keep opacity high (bg-white/90)."
+  },
+  "components": {
+    "shadcn_ui": [
+      "Button",
+      "Input",
+      "Card",
+      "Dialog",
+      "Avatar",
+      "Badge",
+      "Separator",
+      "Tabs",
+      "ScrollArea",
+      "Table",
+      "DropdownMenu",
+      "Select",
+      "Checkbox",
+      "Form"
+    ],
+    "custom_components": [
+      "ReceiptCard: A card with a jagged bottom edge (CSS mask) to look like a torn receipt.",
+      "MoneyInput: Massive font size input for entering amounts."
+    ],
+    "icons": "Lucide React (Stroke width: 1.5px)"
+  },
+  "motion": {
+    "library": "framer-motion",
+    "patterns": [
+      "Page Transition: Opacity fade + slight Y-axis slide.",
+      "List Entrance: Stagger children by 0.05s.",
+      "Interactive: Buttons scale down (0.98) on click."
+    ]
+  },
+  "images": {
+    "hero": {
+      "url": "https://images.unsplash.com/photo-1696627958251-775068a8ddbc?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "alt": "Friends enjoying dinner",
+      "usage": "Landing page hero section"
+    },
+    "features": [
+      {
+        "url": "https://images.unsplash.com/photo-1766852254215-ec02eeec50fa?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "alt": "Group hiking",
+        "usage": "Groups feature section"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1769184618473-58c1f0e294f4?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "alt": "Cozy living room",
+        "usage": "Household expenses section"
+      }
+    ],
+    "abstract": {
+      "url": "https://images.unsplash.com/photo-1670834416065-5b4419def835?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "alt": "Minimal white vase",
+      "usage": "Empty states or background decoration"
+    }
+  },
+  "universal_guidelines": [
+    "Do NOT use 'Inter' for Headings if 'Space Grotesk' or similar is available. If not, use 'Inter' with tight tracking.",
+    "Dark colors look good when used independently without gradients.",
+    "Don't make generic centered layouts.",
+    "Create depth through layered design elements with z-index hierarchy.",
+    "Use glass-morphism effects with backdrop filters (12-24px blur).",
+    "All interactive elements MUST have data-testid attributes.",
+    "Use sonner for toasts.",
+    "Date pickers must use Shadcn Calendar.",
+    "Dropdowns must use Shadcn DropdownMenu or Select."
+  ],
+  "implementation_steps": [
+    "Step 1: Configure Tailwind with custom colors and fonts.",
+    "Step 2: Install Shadcn components (button, input, card, etc).",
+    "Step 3: Build the 'MoneyInput' and 'ReceiptCard' custom components.",
+    "Step 4: Implement the Auth pages (Login/Register) with a clean split layout.",
+    "Step 5: Build the Dashboard with Bento grid layout.",
+    "Step 6: Implement Group and Expense logic with responsive tables."
+  ]
+}
