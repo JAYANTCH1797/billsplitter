@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { dashboardApi, groupsApi } from '../api';
 import { formatCurrency, formatDate, getInitials } from '../lib/utils';
+import { detectExpenseCategory } from '../lib/expenseCategories';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Avatar, AvatarFallback } from '../components/ui/avatar';
@@ -257,24 +258,33 @@ const DashboardPage = () => {
               <Card className="border-border/60" data-testid="recent-activity">
                 <CardContent className="py-4">
                   <div className="space-y-4">
-                    {dashboard.recent_expenses.slice(0, 6).map((expense, index) => (
-                      <div 
-                        key={expense.id} 
-                        className={`${index !== 0 ? 'pt-4 border-t border-border/60' : ''}`}
-                      >
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="flex-1 min-w-0">
-                            <p className="font-medium truncate">{expense.description}</p>
-                            <p className="text-xs text-muted-foreground mt-0.5">
-                              {expense.group_name} · {formatDate(expense.date)}
-                            </p>
+                    {dashboard.recent_expenses.slice(0, 6).map((expense, index) => {
+                      const category = detectExpenseCategory(expense.description);
+                      const CategoryIcon = category.icon;
+                      return (
+                        <div 
+                          key={expense.id} 
+                          className={`${index !== 0 ? 'pt-4 border-t border-border/60' : ''}`}
+                        >
+                          <div className="flex items-start gap-3">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${category.color}`}>
+                              <CategoryIcon className="w-4 h-4" strokeWidth={1.5} />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-start justify-between gap-2">
+                                <p className="font-medium truncate">{expense.description}</p>
+                                <p className="font-semibold currency whitespace-nowrap text-sm">
+                                  {formatCurrency(expense.amount)}
+                                </p>
+                              </div>
+                              <p className="text-xs text-muted-foreground mt-0.5">
+                                {expense.group_name} · {formatDate(expense.date)}
+                              </p>
+                            </div>
                           </div>
-                          <p className="font-semibold currency whitespace-nowrap">
-                            {formatCurrency(expense.amount)}
-                          </p>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </CardContent>
               </Card>
