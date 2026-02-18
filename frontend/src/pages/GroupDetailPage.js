@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { groupsApi, expensesApi, settlementsApi } from '../api';
 import { formatCurrency, formatDate, getInitials, getAvatarColor } from '../lib/utils';
+import { detectExpenseCategory } from '../lib/expenseCategories';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Input } from '../components/ui/input';
@@ -385,55 +386,64 @@ const GroupDetailPage = () => {
               </Card>
             ) : (
               <div className="space-y-3" data-testid="expenses-list">
-                {expenses.map((expense, index) => (
-                  <Card 
-                    key={expense.id} 
-                    className="border-border/60 card-hover animate-slide-up"
-                    style={{ animationDelay: `${index * 0.03}s` }}
-                    data-testid={`expense-card-${expense.id}`}
-                  >
-                    <CardContent className="py-4">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h3 className="font-semibold">{expense.description}</h3>
-                            <span className={`text-xs px-2 py-0.5 rounded-full ${
-                              expense.split_type === 'equal' ? 'bg-blue-100 text-blue-700' :
-                              expense.split_type === 'unequal' ? 'bg-violet-100 text-violet-700' :
-                              expense.split_type === 'parts' ? 'bg-orange-100 text-orange-700' :
-                              'bg-emerald-100 text-emerald-700'
-                            }`}>
-                              {expense.split_type}
-                            </span>
+                {expenses.map((expense, index) => {
+                  const category = detectExpenseCategory(expense.description);
+                  const CategoryIcon = category.icon;
+                  return (
+                    <Card 
+                      key={expense.id} 
+                      className="border-border/60 card-hover animate-slide-up"
+                      style={{ animationDelay: `${index * 0.03}s` }}
+                      data-testid={`expense-card-${expense.id}`}
+                    >
+                      <CardContent className="py-4">
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-start gap-3">
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${category.color}`}>
+                              <CategoryIcon className="w-5 h-5" strokeWidth={1.5} />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-1 flex-wrap">
+                                <h3 className="font-semibold">{expense.description}</h3>
+                                <span className={`text-xs px-2 py-0.5 rounded-full ${
+                                  expense.split_type === 'equal' ? 'bg-blue-100 text-blue-700' :
+                                  expense.split_type === 'unequal' ? 'bg-violet-100 text-violet-700' :
+                                  expense.split_type === 'parts' ? 'bg-orange-100 text-orange-700' :
+                                  'bg-emerald-100 text-emerald-700'
+                                }`}>
+                                  {expense.split_type}
+                                </span>
+                              </div>
+                              <p className="text-sm text-muted-foreground">
+                                Paid by {expense.paid_by_name} · {formatDate(expense.date)}
+                              </p>
+                            </div>
                           </div>
-                          <p className="text-sm text-muted-foreground">
-                            Paid by {expense.paid_by_name} · {formatDate(expense.date)}
-                          </p>
+                          <div className="flex items-center gap-3 flex-shrink-0">
+                            <p className="text-lg font-bold currency">{formatCurrency(expense.amount)}</p>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="icon" className="h-8 w-8" data-testid={`expense-menu-${expense.id}`}>
+                                  <MoreVertical className="w-4 h-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem 
+                                  onClick={() => handleDeleteExpense(expense.id)}
+                                  className="text-destructive"
+                                  data-testid={`delete-expense-${expense.id}`}
+                                >
+                                  <Trash2 className="mr-2 h-4 w-4" />
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-3">
-                          <p className="text-lg font-bold currency">{formatCurrency(expense.amount)}</p>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="icon" className="h-8 w-8" data-testid={`expense-menu-${expense.id}`}>
-                                <MoreVertical className="w-4 h-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuItem 
-                                onClick={() => handleDeleteExpense(expense.id)}
-                                className="text-destructive"
-                                data-testid={`delete-expense-${expense.id}`}
-                              >
-                                <Trash2 className="mr-2 h-4 w-4" />
-                                Delete
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
             )}
           </TabsContent>
