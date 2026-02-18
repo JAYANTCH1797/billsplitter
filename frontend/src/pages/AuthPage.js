@@ -56,9 +56,9 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background overflow-hidden">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       {/* Marquee Banner */}
-      <div className="bg-foreground text-background py-2 overflow-hidden border-b-3 border-foreground">
+      <div className="bg-foreground text-background py-2 overflow-hidden border-b-3 border-foreground marquee-container">
         <div className="animate-marquee whitespace-nowrap flex">
           {[...Array(10)].map((_, i) => (
             <span key={i} className="font-mono text-xs sm:text-sm mx-4 sm:mx-8 flex items-center gap-2">
