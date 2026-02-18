@@ -135,7 +135,7 @@ const DashboardPage = () => {
 
         {/* Balance Cards - Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10" data-testid="balance-cards">
-          <div className="brutal-card-lime p-6 animate-enter delay-1 wiggle-hover">
+          <div className="brutal-card-lime p-6 animate-enter delay-1">
             <div className="flex items-start justify-between">
               <div>
                 <p className="font-mono text-xs uppercase tracking-wider mb-2 opacity-70">You are owed</p>
@@ -149,7 +149,7 @@ const DashboardPage = () => {
             </div>
           </div>
 
-          <div className="brutal-card-coral p-6 animate-enter delay-2 wiggle-hover">
+          <div className="brutal-card-coral p-6 animate-enter delay-2">
             <div className="flex items-start justify-between">
               <div>
                 <p className="font-mono text-xs uppercase tracking-wider mb-2 opacity-70">You owe</p>
@@ -163,7 +163,7 @@ const DashboardPage = () => {
             </div>
           </div>
 
-          <div className="brutal-card p-6 animate-enter delay-3 wiggle-hover">
+          <div className="brutal-card p-6 animate-enter delay-3">
             <div className="flex items-start justify-between">
               <div>
                 <p className="font-mono text-xs uppercase tracking-wider mb-2 text-muted-foreground">Net balance</p>
