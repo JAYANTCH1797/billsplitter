@@ -210,32 +210,14 @@
         width: 100%;
     }
 
-    /* Bounce on hover - only on non-touch devices */
+    /* Bounce on hover - DISABLED to prevent card issues */
     .bounce-hover {
-        transition: transform 0.2s ease;
+        /* No animation */
     }
 
-    @media (hover: hover) and (pointer: fine) {
-        .bounce-hover:hover {
-            animation: bounce 0.5s ease;
-        }
-    }
-
-    @keyframes bounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-8px); }
-    }
-
-    /* Wiggle animation - only on non-touch devices */
-    @keyframes wiggle {
-        0%, 100% { transform: rotate(-2deg); }
-        50% { transform: rotate(2deg); }
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-        .wiggle-hover:hover {
-            animation: wiggle 0.3s ease-in-out;
-        }
+    /* Wiggle animation - DISABLED to prevent card issues */
+    .wiggle-hover {
+        /* No animation */
     }
 
     /* Entrance animations */
