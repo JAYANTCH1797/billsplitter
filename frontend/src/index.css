@@ -215,6 +215,12 @@
         animation: marquee 20s linear infinite;
     }
 
+    /* Marquee container - prevent horizontal overflow */
+    .marquee-container {
+        overflow: hidden;
+        width: 100%;
+    }
+
     /* Bounce on hover */
     .bounce-hover {
         transition: transform 0.2s ease;
