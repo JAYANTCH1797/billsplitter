@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,55 +6,34 @@
 
 @layer base {
     :root {
-        --background: 240 9% 98%;
-        --foreground: 240 10% 4%;
+        /* Neo-Brutalist Playful Palette */
+        --background: 60 9% 97%;
+        --foreground: 0 0% 5%;
         --card: 0 0% 100%;
-        --card-foreground: 240 10% 4%;
+        --card-foreground: 0 0% 5%;
         --popover: 0 0% 100%;
-        --popover-foreground: 240 10% 4%;
-        --primary: 240 10% 4%;
-        --primary-foreground: 0 0% 98%;
-        --secondary: 240 5% 96%;
-        --secondary-foreground: 240 10% 4%;
-        --muted: 240 5% 96%;
-        --muted-foreground: 240 4% 46%;
-        --accent: 240 5% 96%;
-        --accent-foreground: 240 10% 4%;
+        --popover-foreground: 0 0% 5%;
+        --primary: 0 0% 5%;
+        --primary-foreground: 60 9% 97%;
+        --secondary: 48 96% 53%;
+        --secondary-foreground: 0 0% 5%;
+        --muted: 60 5% 90%;
+        --muted-foreground: 0 0% 40%;
+        --accent: 262 83% 58%;
+        --accent-foreground: 0 0% 100%;
         --destructive: 0 84% 60%;
         --destructive-foreground: 0 0% 98%;
-        --border: 240 6% 90%;
-        --input: 240 6% 90%;
-        --ring: 240 10% 4%;
-        --radius: 0.5rem;
+        --border: 0 0% 5%;
+        --input: 0 0% 5%;
+        --ring: 262 83% 58%;
+        --radius: 0px;
         
         /* Custom accent colors */
-        --accent-blue: 217 91% 60%;
-        --accent-emerald: 160 84% 39%;
-        --accent-rose: 350 89% 60%;
-        --accent-violet: 263 70% 50%;
-        --accent-orange: 25 95% 53%;
-    }
-
-    .dark {
-        --background: 240 10% 4%;
-        --foreground: 0 0% 98%;
-        --card: 240 10% 4%;
-        --card-foreground: 0 0% 98%;
-        --popover: 240 10% 4%;
-        --popover-foreground: 0 0% 98%;
-        --primary: 0 0% 98%;
-        --primary-foreground: 240 10% 4%;
-        --secondary: 240 4% 16%;
-        --secondary-foreground: 0 0% 98%;
-        --muted: 240 4% 16%;
-        --muted-foreground: 240 5% 65%;
-        --accent: 240 4% 16%;
-        --accent-foreground: 0 0% 98%;
-        --destructive: 0 63% 31%;
-        --destructive-foreground: 0 0% 98%;
-        --border: 240 4% 16%;
-        --input: 240 4% 16%;
-        --ring: 240 5% 84%;
+        --lime: 82 85% 55%;
+        --coral: 16 100% 66%;
+        --sky: 199 89% 48%;
+        --violet: 262 83% 58%;
+        --yellow: 48 96% 53%;
     }
 }
 
@@ -65,126 +44,271 @@
     
     body {
         @apply bg-background text-foreground;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-family: 'Syne', sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        background-image: 
+            radial-gradient(circle at 20% 50%, hsl(var(--yellow) / 0.08) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, hsl(var(--violet) / 0.06) 0%, transparent 50%),
+            radial-gradient(circle at 50% 80%, hsl(var(--lime) / 0.05) 0%, transparent 50%);
+        background-attachment: fixed;
     }
 
     h1, h2, h3, h4, h5, h6 {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Syne', sans-serif;
+        font-weight: 700;
         letter-spacing: -0.02em;
-        font-weight: 600;
+    }
+
+    /* Override button styles for neo-brutalist look */
+    button, .btn {
+        border-radius: 0 !important;
     }
 }
 
 @layer utilities {
     .font-mono {
-        font-family: 'JetBrains Mono', monospace;
+        font-family: 'Space Mono', monospace;
     }
     
     .currency {
-        font-family: 'JetBrains Mono', monospace;
-        font-weight: 500;
-    }
-    
-    .text-balance-positive {
-        @apply text-emerald-600;
-    }
-    
-    .text-balance-negative {
-        @apply text-rose-600;
+        font-family: 'Space Mono', monospace;
+        font-weight: 700;
+        letter-spacing: -0.02em;
     }
 
-    .glass {
-        @apply bg-white/90 backdrop-blur-md;
-    }
-
-    .receipt-card {
-        position: relative;
+    /* Neo-brutalist card with hard shadow */
+    .brutal-card {
         background: white;
+        border: 3px solid hsl(var(--foreground));
+        box-shadow: 6px 6px 0px hsl(var(--foreground));
+        transition: all 0.15s ease;
     }
 
-    .receipt-card::after {
-        content: '';
-        position: absolute;
-        bottom: -10px;
-        left: 0;
-        right: 0;
-        height: 10px;
-        background: linear-gradient(135deg, white 33.33%, transparent 33.33%),
-                    linear-gradient(-135deg, white 33.33%, transparent 33.33%);
-        background-size: 10px 20px;
+    .brutal-card:hover {
+        box-shadow: 8px 8px 0px hsl(var(--foreground));
+        transform: translate(-2px, -2px);
     }
 
-    /* Animation utilities */
-    .animate-fade-in {
-        animation: fadeIn 0.3s ease-out;
+    .brutal-card:active {
+        box-shadow: 2px 2px 0px hsl(var(--foreground));
+        transform: translate(2px, 2px);
     }
 
-    .animate-slide-up {
-        animation: slideUp 0.3s ease-out;
+    /* Colored variants */
+    .brutal-card-lime {
+        background: hsl(var(--lime));
+        border-color: hsl(var(--foreground));
+        box-shadow: 6px 6px 0px hsl(var(--foreground));
     }
 
-    .animate-scale-in {
-        animation: scaleIn 0.2s ease-out;
+    .brutal-card-yellow {
+        background: hsl(var(--yellow));
+        border-color: hsl(var(--foreground));
+        box-shadow: 6px 6px 0px hsl(var(--foreground));
     }
 
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
+    .brutal-card-violet {
+        background: hsl(var(--violet));
+        color: white;
+        border-color: hsl(var(--foreground));
+        box-shadow: 6px 6px 0px hsl(var(--foreground));
     }
 
-    @keyframes slideUp {
-        from { 
-            opacity: 0; 
-            transform: translateY(10px); 
+    .brutal-card-coral {
+        background: hsl(var(--coral));
+        border-color: hsl(var(--foreground));
+        box-shadow: 6px 6px 0px hsl(var(--foreground));
+    }
+
+    /* Neo-brutalist button */
+    .brutal-btn {
+        background: hsl(var(--foreground));
+        color: hsl(var(--background));
+        border: 3px solid hsl(var(--foreground));
+        font-family: 'Syne', sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 12px 24px;
+        transition: all 0.1s ease;
+        position: relative;
+    }
+
+    .brutal-btn:hover {
+        background: hsl(var(--yellow));
+        color: hsl(var(--foreground));
+    }
+
+    .brutal-btn:active {
+        transform: translate(2px, 2px);
+    }
+
+    .brutal-btn-outline {
+        background: transparent;
+        color: hsl(var(--foreground));
+        border: 3px solid hsl(var(--foreground));
+    }
+
+    .brutal-btn-outline:hover {
+        background: hsl(var(--foreground));
+        color: hsl(var(--background));
+    }
+
+    /* Balance indicators */
+    .balance-positive {
+        color: hsl(142 76% 36%);
+    }
+    
+    .balance-negative {
+        color: hsl(0 84% 60%);
+    }
+
+    /* Sticker effect */
+    .sticker {
+        display: inline-flex;
+        padding: 4px 12px;
+        border: 2px solid hsl(var(--foreground));
+        font-family: 'Space Mono', monospace;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transform: rotate(-2deg);
+    }
+
+    .sticker-lime { background: hsl(var(--lime)); }
+    .sticker-yellow { background: hsl(var(--yellow)); }
+    .sticker-violet { background: hsl(var(--violet)); color: white; }
+    .sticker-coral { background: hsl(var(--coral)); }
+    .sticker-sky { background: hsl(var(--sky)); color: white; }
+
+    /* Marquee animation */
+    @keyframes marquee {
+        0% { transform: translateX(0%); }
+        100% { transform: translateX(-50%); }
+    }
+
+    .animate-marquee {
+        animation: marquee 20s linear infinite;
+    }
+
+    /* Bounce on hover */
+    .bounce-hover {
+        transition: transform 0.2s ease;
+    }
+
+    .bounce-hover:hover {
+        animation: bounce 0.5s ease;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
+    }
+
+    /* Wiggle animation */
+    @keyframes wiggle {
+        0%, 100% { transform: rotate(-2deg); }
+        50% { transform: rotate(2deg); }
+    }
+
+    .wiggle-hover:hover {
+        animation: wiggle 0.3s ease-in-out;
+    }
+
+    /* Entrance animations */
+    .animate-enter {
+        animation: enterUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        opacity: 0;
+    }
+
+    @keyframes enterUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
         }
-        to { 
-            opacity: 1; 
-            transform: translateY(0); 
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
     }
 
-    @keyframes scaleIn {
-        from { 
-            opacity: 0; 
-            transform: scale(0.95); 
-        }
-        to { 
-            opacity: 1; 
-            transform: scale(1); 
-        }
+    /* Staggered delays */
+    .delay-1 { animation-delay: 0.05s; }
+    .delay-2 { animation-delay: 0.1s; }
+    .delay-3 { animation-delay: 0.15s; }
+    .delay-4 { animation-delay: 0.2s; }
+    .delay-5 { animation-delay: 0.25s; }
+    .delay-6 { animation-delay: 0.3s; }
+
+    /* Striped background */
+    .striped-bg {
+        background-image: repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 10px,
+            hsl(var(--foreground) / 0.03) 10px,
+            hsl(var(--foreground) / 0.03) 20px
+        );
     }
 
-    /* Staggered animation */
-    .stagger-1 { animation-delay: 0.05s; }
-    .stagger-2 { animation-delay: 0.1s; }
-    .stagger-3 { animation-delay: 0.15s; }
-    .stagger-4 { animation-delay: 0.2s; }
-    .stagger-5 { animation-delay: 0.25s; }
-}
-
-@layer base {
-    [data-debug-wrapper="true"] {
-        display: contents !important;
+    /* Dotted background */
+    .dotted-bg {
+        background-image: radial-gradient(
+            circle,
+            hsl(var(--foreground) / 0.1) 1px,
+            transparent 1px
+        );
+        background-size: 20px 20px;
     }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: hsl(var(--muted));
+        border-left: 3px solid hsl(var(--foreground));
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: hsl(var(--foreground));
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: hsl(var(--violet));
+    }
+
+    /* Category icon containers */
+    .category-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid hsl(var(--foreground));
+    }
+
+    .category-groceries { background: hsl(var(--lime)); }
+    .category-restaurant { background: hsl(var(--coral)); }
+    .category-coffee { background: hsl(var(--yellow)); }
+    .category-movies { background: hsl(var(--violet)); color: white; }
+    .category-travel { background: hsl(var(--sky)); color: white; }
+    .category-car { background: hsl(60 5% 90%); }
+    .category-default { background: white; }
 }
 
-/* Scrollbar styling */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+/* Input focus states */
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    box-shadow: 4px 4px 0px hsl(var(--foreground));
 }
 
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-    background: hsl(var(--border));
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--muted-foreground));
+/* Dialog overrides */
+[role="dialog"] {
+    border-radius: 0 !important;
+    border: 3px solid hsl(var(--foreground)) !important;
+    box-shadow: 10px 10px 0px hsl(var(--foreground)) !important;
 }

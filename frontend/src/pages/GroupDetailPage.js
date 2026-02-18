@@ -4,13 +4,10 @@ import { useAuth } from '../context/AuthContext';
 import { groupsApi, expensesApi, settlementsApi } from '../api';
 import { formatCurrency, formatDate, getInitials, getAvatarColor } from '../lib/utils';
 import { detectExpenseCategory } from '../lib/expenseCategories';
-import { Button } from '../components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Avatar, AvatarFallback } from '../components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
-import { Separator } from '../components/ui/separator';
 import {
   Dialog,
   DialogContent,
@@ -45,8 +42,8 @@ import {
   TrendingUp,
   TrendingDown,
   ArrowRightLeft,
-  Calendar,
-  Check
+  Check,
+  Zap
 } from 'lucide-react';
 
 const GroupDetailPage = () => {
@@ -143,7 +140,7 @@ const GroupDetailPage = () => {
     setIsSubmitting(true);
     try {
       await groupsApi.addMember(groupId, newMemberEmail);
-      toast.success('Member added successfully');
+      toast.success('Member added!');
       setNewMemberEmail('');
       setShowAddMember(false);
       fetchData();
@@ -189,7 +186,7 @@ const GroupDetailPage = () => {
         splits: expenseForm.splits,
         date: expenseForm.date
       });
-      toast.success('Expense added successfully');
+      toast.success('Expense added!');
       setShowAddExpense(false);
       setExpenseForm({
         description: '',
@@ -231,7 +228,7 @@ const GroupDetailPage = () => {
         to_user: settlementForm.to_user,
         amount: parseFloat(settlementForm.amount)
       });
-      toast.success('Settlement recorded');
+      toast.success('Settlement recorded!');
       setShowSettlement(false);
       setSettlementForm({ from_user: '', to_user: '', amount: '' });
       fetchData();
@@ -290,68 +287,70 @@ const GroupDetailPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <RefreshCw className="w-6 h-6 animate-spin text-muted-foreground" />
+        <div className="brutal-card p-8">
+          <RefreshCw className="w-8 h-8 animate-spin" />
+        </div>
       </div>
     );
   }
 
+  const memberColors = ['bg-yellow-400', 'bg-lime-400', 'bg-violet-500 text-white', 'bg-sky-400', 'bg-coral'];
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-50 glass border-b border-border/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <header className="sticky top-0 z-50 bg-background border-b-3 border-foreground">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
-              <Button 
-                variant="ghost" 
-                size="icon" 
+              <button 
                 onClick={() => navigate('/groups')}
-                className="rounded-full"
+                className="w-10 h-10 border-3 border-foreground bg-white flex items-center justify-center hover:bg-yellow-400 transition-colors"
                 data-testid="back-btn"
               >
-                <ArrowLeft className="w-5 h-5" />
-              </Button>
+                <ArrowLeft className="w-5 h-5" strokeWidth={2.5} />
+              </button>
               <div>
-                <h1 className="font-bold text-lg">{group?.name}</h1>
-                <p className="text-xs text-muted-foreground">
+                <h1 className="font-bold text-xl">{group?.name}</h1>
+                <p className="text-xs text-muted-foreground font-mono uppercase">
                   {group?.members?.length} member{group?.members?.length !== 1 ? 's' : ''}
                 </p>
               </div>
             </div>
 
             <div className="flex items-center gap-2">
-              <Button 
+              <button 
                 onClick={() => setShowAddExpense(true)} 
-                className="rounded-full gap-2"
+                className="brutal-btn flex items-center gap-2 py-2 px-4"
                 data-testid="add-expense-btn"
               >
-                <Plus className="w-4 h-4" />
+                <Plus className="w-4 h-4" strokeWidth={3} />
                 <span className="hidden sm:inline">Add Expense</span>
-              </Button>
+              </button>
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="rounded-full" data-testid="group-menu-btn">
-                    <MoreVertical className="w-5 h-5" />
-                  </Button>
+                  <button className="w-10 h-10 border-3 border-foreground bg-white flex items-center justify-center hover:bg-muted transition-colors" data-testid="group-menu-btn">
+                    <MoreVertical className="w-5 h-5" strokeWidth={2.5} />
+                  </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => setShowAddMember(true)} data-testid="add-member-menu-item">
-                    <UserPlus className="mr-2 h-4 w-4" />
-                    Add Member
+                <DropdownMenuContent align="end" className="border-3 border-foreground rounded-none shadow-[4px_4px_0px_hsl(var(--foreground))]">
+                  <DropdownMenuItem onClick={() => setShowAddMember(true)} className="font-bold cursor-pointer" data-testid="add-member-menu-item">
+                    <UserPlus className="mr-2 h-4 w-4" strokeWidth={2.5} />
+                    ADD MEMBER
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setShowSettlement(true)} data-testid="settle-up-menu-item">
-                    <ArrowRightLeft className="mr-2 h-4 w-4" />
-                    Settle Up
+                  <DropdownMenuItem onClick={() => setShowSettlement(true)} className="font-bold cursor-pointer" data-testid="settle-up-menu-item">
+                    <ArrowRightLeft className="mr-2 h-4 w-4" strokeWidth={2.5} />
+                    SETTLE UP
                   </DropdownMenuItem>
                   {group?.created_by === user?.id && (
                     <DropdownMenuItem 
                       onClick={() => setShowDeleteGroup(true)} 
-                      className="text-destructive"
+                      className="font-bold cursor-pointer text-red-600"
                       data-testid="delete-group-menu-item"
                     >
-                      <Trash2 className="mr-2 h-4 w-4" />
-                      Delete Group
+                      <Trash2 className="mr-2 h-4 w-4" strokeWidth={2.5} />
+                      DELETE GROUP
                     </DropdownMenuItem>
                   )}
                 </DropdownMenuContent>
@@ -362,86 +361,111 @@ const GroupDetailPage = () => {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <Tabs defaultValue="expenses" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-6">
-            <TabsTrigger value="expenses" data-testid="expenses-tab">Expenses</TabsTrigger>
-            <TabsTrigger value="balances" data-testid="balances-tab">Balances</TabsTrigger>
-            <TabsTrigger value="members" data-testid="members-tab">Members</TabsTrigger>
+          <TabsList className="w-full border-3 border-foreground rounded-none p-0 h-auto bg-transparent mb-6">
+            <TabsTrigger 
+              value="expenses" 
+              className="flex-1 py-3 font-bold uppercase rounded-none data-[state=active]:bg-foreground data-[state=active]:text-background border-r-3 border-foreground"
+              data-testid="expenses-tab"
+            >
+              Expenses
+            </TabsTrigger>
+            <TabsTrigger 
+              value="balances" 
+              className="flex-1 py-3 font-bold uppercase rounded-none data-[state=active]:bg-foreground data-[state=active]:text-background border-r-3 border-foreground"
+              data-testid="balances-tab"
+            >
+              Balances
+            </TabsTrigger>
+            <TabsTrigger 
+              value="members" 
+              className="flex-1 py-3 font-bold uppercase rounded-none data-[state=active]:bg-foreground data-[state=active]:text-background"
+              data-testid="members-tab"
+            >
+              Members
+            </TabsTrigger>
           </TabsList>
 
           {/* Expenses Tab */}
           <TabsContent value="expenses" data-testid="expenses-content">
             {expenses.length === 0 ? (
-              <Card className="border-border/60 border-dashed">
-                <CardContent className="flex flex-col items-center justify-center py-12">
-                  <Receipt className="w-12 h-12 text-muted-foreground/40 mb-4" strokeWidth={1.5} />
-                  <h3 className="font-semibold mb-1">No expenses yet</h3>
-                  <p className="text-sm text-muted-foreground mb-4">Add your first expense to get started</p>
-                  <Button onClick={() => setShowAddExpense(true)} className="rounded-full" data-testid="add-first-expense-btn">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add Expense
-                  </Button>
-                </CardContent>
-              </Card>
+              <div className="brutal-card border-dashed p-12 text-center animate-enter">
+                <div className="w-20 h-20 border-3 border-foreground mx-auto mb-4 flex items-center justify-center bg-yellow-400">
+                  <Receipt className="w-10 h-10" strokeWidth={2} />
+                </div>
+                <h3 className="font-bold text-xl mb-2">No expenses yet!</h3>
+                <p className="text-muted-foreground mb-6 font-mono text-sm">
+                  Add your first expense to get started
+                </p>
+                <button onClick={() => setShowAddExpense(true)} className="brutal-btn" data-testid="add-first-expense-btn">
+                  <Plus className="w-4 h-4 mr-2 inline" strokeWidth={3} />
+                  Add Expense
+                </button>
+              </div>
             ) : (
               <div className="space-y-3" data-testid="expenses-list">
                 {expenses.map((expense, index) => {
                   const category = detectExpenseCategory(expense.description);
                   const CategoryIcon = category.icon;
                   return (
-                    <Card 
+                    <div 
                       key={expense.id} 
-                      className="border-border/60 card-hover animate-slide-up"
+                      className="brutal-card p-4 animate-enter"
                       style={{ animationDelay: `${index * 0.03}s` }}
                       data-testid={`expense-card-${expense.id}`}
                     >
-                      <CardContent className="py-4">
-                        <div className="flex items-start justify-between">
-                          <div className="flex items-start gap-3">
-                            <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${category.color}`}>
-                              <CategoryIcon className="w-5 h-5" strokeWidth={1.5} />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-2 mb-1 flex-wrap">
-                                <h3 className="font-semibold">{expense.description}</h3>
-                                <span className={`text-xs px-2 py-0.5 rounded-full ${
-                                  expense.split_type === 'equal' ? 'bg-blue-100 text-blue-700' :
-                                  expense.split_type === 'unequal' ? 'bg-violet-100 text-violet-700' :
-                                  expense.split_type === 'parts' ? 'bg-orange-100 text-orange-700' :
-                                  'bg-emerald-100 text-emerald-700'
-                                }`}>
-                                  {expense.split_type}
-                                </span>
-                              </div>
-                              <p className="text-sm text-muted-foreground">
-                                Paid by {expense.paid_by_name} · {formatDate(expense.date)}
-                              </p>
-                            </div>
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-start gap-4">
+                          <div className={`category-icon flex-shrink-0 ${
+                            category.id === 'groceries' ? 'category-groceries' :
+                            category.id === 'restaurant' ? 'category-restaurant' :
+                            category.id === 'coffee' ? 'category-coffee' :
+                            category.id === 'movies' ? 'category-movies' :
+                            category.id === 'travel' || category.id === 'car' ? 'category-travel' :
+                            'category-default'
+                          }`}>
+                            <CategoryIcon className="w-6 h-6" strokeWidth={2} />
                           </div>
-                          <div className="flex items-center gap-3 flex-shrink-0">
-                            <p className="text-lg font-bold currency">{formatCurrency(expense.amount)}</p>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="icon" className="h-8 w-8" data-testid={`expense-menu-${expense.id}`}>
-                                  <MoreVertical className="w-4 h-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuItem 
-                                  onClick={() => handleDeleteExpense(expense.id)}
-                                  className="text-destructive"
-                                  data-testid={`delete-expense-${expense.id}`}
-                                >
-                                  <Trash2 className="mr-2 h-4 w-4" />
-                                  Delete
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1 flex-wrap">
+                              <h3 className="font-bold text-lg">{expense.description}</h3>
+                              <span className={`sticker text-[10px] ${
+                                expense.split_type === 'equal' ? 'sticker-sky' :
+                                expense.split_type === 'unequal' ? 'sticker-violet' :
+                                expense.split_type === 'parts' ? 'sticker-coral' :
+                                'sticker-lime'
+                              }`}>
+                                {expense.split_type}
+                              </span>
+                            </div>
+                            <p className="text-sm text-muted-foreground font-mono">
+                              Paid by {expense.paid_by_name} · {formatDate(expense.date)}
+                            </p>
                           </div>
                         </div>
-                      </CardContent>
-                    </Card>
+                        <div className="flex items-center gap-3 flex-shrink-0">
+                          <p className="text-2xl font-bold currency">{formatCurrency(expense.amount)}</p>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <button className="w-8 h-8 border-2 border-foreground flex items-center justify-center hover:bg-muted" data-testid={`expense-menu-${expense.id}`}>
+                                <MoreVertical className="w-4 h-4" strokeWidth={2.5} />
+                              </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="border-3 border-foreground rounded-none">
+                              <DropdownMenuItem 
+                                onClick={() => handleDeleteExpense(expense.id)}
+                                className="font-bold cursor-pointer text-red-600"
+                                data-testid={`delete-expense-${expense.id}`}
+                              >
+                                <Trash2 className="mr-2 h-4 w-4" strokeWidth={2.5} />
+                                DELETE
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                      </div>
+                    </div>
                   );
                 })}
               </div>
@@ -451,78 +475,75 @@ const GroupDetailPage = () => {
           {/* Balances Tab */}
           <TabsContent value="balances" data-testid="balances-content">
             {balances.length === 0 ? (
-              <Card className="border-border/60">
-                <CardContent className="flex flex-col items-center justify-center py-12">
-                  <Check className="w-12 h-12 text-emerald-500 mb-4" strokeWidth={1.5} />
-                  <h3 className="font-semibold mb-1">All settled up!</h3>
-                  <p className="text-sm text-muted-foreground">No outstanding balances</p>
-                </CardContent>
-              </Card>
+              <div className="brutal-card-lime p-12 text-center animate-enter">
+                <div className="w-20 h-20 border-3 border-foreground mx-auto mb-4 flex items-center justify-center bg-white">
+                  <Check className="w-10 h-10" strokeWidth={3} />
+                </div>
+                <h3 className="font-bold text-2xl mb-2">All Settled Up! 🎉</h3>
+                <p className="font-mono text-sm">No outstanding balances</p>
+              </div>
             ) : (
               <div className="space-y-3" data-testid="balances-list">
                 {balances.map((balance, index) => (
-                  <Card 
+                  <div 
                     key={balance.user_id} 
-                    className="border-border/60 animate-slide-up"
+                    className={`brutal-card p-5 animate-enter ${balance.amount > 0 ? 'border-l-8 border-l-lime-400' : 'border-l-8 border-l-coral'}`}
                     style={{ animationDelay: `${index * 0.03}s` }}
                     data-testid={`balance-card-${balance.user_id}`}
                   >
-                    <CardContent className="py-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <Avatar className={`h-10 w-10 ${getAvatarColor(index)}`}>
-                            <AvatarFallback>{getInitials(balance.user_name)}</AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <p className="font-semibold">{balance.user_name}</p>
-                            <p className="text-sm text-muted-foreground">
-                              {balance.amount > 0 ? 'owes you' : 'you owe'}
-                            </p>
-                          </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className={`w-12 h-12 border-3 border-foreground flex items-center justify-center font-bold ${memberColors[index % memberColors.length]}`}>
+                          {getInitials(balance.user_name)}
                         </div>
-                        <div className="flex items-center gap-3">
-                          {balance.amount > 0 ? (
-                            <TrendingUp className="w-5 h-5 text-emerald-500" />
-                          ) : (
-                            <TrendingDown className="w-5 h-5 text-rose-500" />
-                          )}
-                          <p className={`text-lg font-bold currency ${balance.amount > 0 ? 'text-balance-positive' : 'text-balance-negative'}`}>
-                            {formatCurrency(Math.abs(balance.amount))}
+                        <div>
+                          <p className="font-bold text-lg">{balance.user_name}</p>
+                          <p className="text-sm font-mono text-muted-foreground uppercase">
+                            {balance.amount > 0 ? 'owes you' : 'you owe them'}
                           </p>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
+                      <div className="flex items-center gap-3">
+                        {balance.amount > 0 ? (
+                          <TrendingUp className="w-6 h-6 text-lime-600" strokeWidth={2.5} />
+                        ) : (
+                          <TrendingDown className="w-6 h-6 text-red-500" strokeWidth={2.5} />
+                        )}
+                        <p className={`text-2xl font-bold currency ${balance.amount > 0 ? 'balance-positive' : 'balance-negative'}`}>
+                          {formatCurrency(Math.abs(balance.amount))}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 ))}
                 
-                <Button 
+                <button 
                   onClick={() => setShowSettlement(true)} 
-                  variant="outline" 
-                  className="w-full mt-4 rounded-full"
+                  className="brutal-btn-outline w-full py-4 mt-4"
                   data-testid="settle-up-btn"
                 >
-                  <ArrowRightLeft className="w-4 h-4 mr-2" />
-                  Settle Up
-                </Button>
+                  <ArrowRightLeft className="w-5 h-5 mr-2 inline" strokeWidth={2.5} />
+                  SETTLE UP
+                </button>
               </div>
             )}
 
             {/* Recent Settlements */}
             {settlements.length > 0 && (
               <div className="mt-8">
-                <h3 className="font-semibold mb-4">Recent Settlements</h3>
-                <div className="space-y-2" data-testid="settlements-list">
+                <h3 className="font-bold text-xl mb-4 flex items-center gap-2">
+                  <Zap className="w-5 h-5" strokeWidth={2.5} />
+                  Recent Settlements
+                </h3>
+                <div className="brutal-card divide-y-3 divide-foreground" data-testid="settlements-list">
                   {settlements.slice(0, 5).map((settlement) => (
-                    <div 
-                      key={settlement.id}
-                      className="flex items-center justify-between py-3 border-b border-border/60 last:border-0"
-                    >
-                      <div className="text-sm">
-                        <span className="font-medium">{settlement.from_user_name}</span>
+                    <div key={settlement.id} className="p-4 flex items-center justify-between">
+                      <div className="font-mono text-sm">
+                        <span className="font-bold">{settlement.from_user_name}</span>
                         <span className="text-muted-foreground"> paid </span>
-                        <span className="font-medium">{settlement.to_user_name}</span>
+                        <span className="font-bold">{settlement.to_user_name}</span>
                       </div>
-                      <p className="font-semibold currency">{formatCurrency(settlement.amount)}</p>
+                      <p className="font-bold currency">{formatCurrency(settlement.amount)}</p>
                     </div>
                   ))}
                 </div>
@@ -534,53 +555,51 @@ const GroupDetailPage = () => {
           <TabsContent value="members" data-testid="members-content">
             <div className="space-y-3">
               {group?.members?.map((member, index) => (
-                <Card 
+                <div 
                   key={member.user_id} 
-                  className="border-border/60 animate-slide-up"
+                  className="brutal-card p-4 animate-enter"
                   style={{ animationDelay: `${index * 0.03}s` }}
                   data-testid={`member-card-${member.user_id}`}
                 >
-                  <CardContent className="py-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <Avatar className={`h-10 w-10 ${getAvatarColor(index)}`}>
-                          <AvatarFallback>{getInitials(member.name)}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <p className="font-semibold">
-                            {member.name}
-                            {member.user_id === user?.id && (
-                              <span className="text-muted-foreground font-normal"> (you)</span>
-                            )}
-                          </p>
-                          <p className="text-sm text-muted-foreground">{member.email}</p>
-                        </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className={`w-12 h-12 border-3 border-foreground flex items-center justify-center font-bold ${memberColors[index % memberColors.length]}`}>
+                        {getInitials(member.name)}
                       </div>
-                      {member.user_id !== group?.created_by && member.user_id !== user?.id && (
-                        <Button 
-                          variant="ghost" 
-                          size="icon"
-                          onClick={() => handleRemoveMember(member.user_id)}
-                          className="text-muted-foreground hover:text-destructive"
-                          data-testid={`remove-member-${member.user_id}`}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      )}
+                      <div>
+                        <p className="font-bold text-lg">
+                          {member.name}
+                          {member.user_id === user?.id && (
+                            <span className="sticker sticker-yellow ml-2 text-[10px]">you</span>
+                          )}
+                          {member.user_id === group?.created_by && (
+                            <span className="sticker sticker-violet ml-2 text-[10px]">admin</span>
+                          )}
+                        </p>
+                        <p className="text-sm text-muted-foreground font-mono">{member.email}</p>
+                      </div>
                     </div>
-                  </CardContent>
-                </Card>
+                    {member.user_id !== group?.created_by && member.user_id !== user?.id && (
+                      <button 
+                        onClick={() => handleRemoveMember(member.user_id)}
+                        className="w-10 h-10 border-3 border-foreground flex items-center justify-center hover:bg-red-100 hover:border-red-500 transition-colors"
+                        data-testid={`remove-member-${member.user_id}`}
+                      >
+                        <Trash2 className="w-5 h-5 text-red-500" strokeWidth={2.5} />
+                      </button>
+                    )}
+                  </div>
+                </div>
               ))}
 
-              <Button 
+              <button 
                 onClick={() => setShowAddMember(true)} 
-                variant="outline" 
-                className="w-full mt-4 rounded-full"
+                className="brutal-btn-outline w-full py-4 mt-4"
                 data-testid="add-member-btn"
               >
-                <UserPlus className="w-4 h-4 mr-2" />
-                Add Member
-              </Button>
+                <UserPlus className="w-5 h-5 mr-2 inline" strokeWidth={2.5} />
+                ADD MEMBER
+              </button>
             </div>
           </TabsContent>
         </Tabs>
@@ -588,70 +607,72 @@ const GroupDetailPage = () => {
 
       {/* Add Member Dialog */}
       <Dialog open={showAddMember} onOpenChange={setShowAddMember}>
-        <DialogContent data-testid="add-member-dialog">
+        <DialogContent className="border-3 border-foreground rounded-none shadow-[8px_8px_0px_hsl(var(--foreground))] max-w-md" data-testid="add-member-dialog">
           <DialogHeader>
-            <DialogTitle>Add Member</DialogTitle>
-            <DialogDescription>
-              Enter the email of the person you want to add to this group.
+            <DialogTitle className="text-2xl font-bold">Add Member</DialogTitle>
+            <DialogDescription className="font-mono text-sm">
+              Enter the email of the person you want to add
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email Address</Label>
+              <Label htmlFor="email" className="font-bold uppercase text-xs">Email Address</Label>
               <Input
                 id="email"
                 type="email"
                 placeholder="friend@example.com"
                 value={newMemberEmail}
                 onChange={(e) => setNewMemberEmail(e.target.value)}
+                className="h-12 border-3 border-foreground rounded-none font-mono"
                 data-testid="member-email-input"
               />
             </div>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowAddMember(false)} className="rounded-full">
+          <DialogFooter className="gap-2">
+            <button onClick={() => setShowAddMember(false)} className="brutal-btn-outline px-6 py-3">
               Cancel
-            </Button>
-            <Button onClick={handleAddMember} disabled={isSubmitting} className="rounded-full" data-testid="add-member-submit-btn">
+            </button>
+            <button onClick={handleAddMember} disabled={isSubmitting} className="brutal-btn px-6 py-3" data-testid="add-member-submit-btn">
               {isSubmitting ? 'Adding...' : 'Add Member'}
-            </Button>
+            </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       {/* Add Expense Dialog */}
       <Dialog open={showAddExpense} onOpenChange={setShowAddExpense}>
-        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto" data-testid="add-expense-dialog">
+        <DialogContent className="border-3 border-foreground rounded-none shadow-[8px_8px_0px_hsl(var(--foreground))] max-w-lg max-h-[90vh] overflow-y-auto" data-testid="add-expense-dialog">
           <DialogHeader>
-            <DialogTitle>Add Expense</DialogTitle>
-            <DialogDescription>
-              Enter the details of the expense and how to split it.
+            <DialogTitle className="text-2xl font-bold">Add Expense</DialogTitle>
+            <DialogDescription className="font-mono text-sm">
+              Enter the details and how to split it
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="description">Description *</Label>
+              <Label htmlFor="description" className="font-bold uppercase text-xs">Description *</Label>
               <Input
                 id="description"
                 placeholder="e.g., Dinner, Groceries, Uber"
                 value={expenseForm.description}
                 onChange={(e) => setExpenseForm(prev => ({ ...prev, description: e.target.value }))}
+                className="h-12 border-3 border-foreground rounded-none"
                 data-testid="expense-description-input"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="amount">Amount *</Label>
+                <Label htmlFor="amount" className="font-bold uppercase text-xs">Amount *</Label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-lg">$</span>
                   <Input
                     id="amount"
                     type="number"
                     step="0.01"
                     min="0"
                     placeholder="0.00"
-                    className="pl-7 currency"
+                    className="h-12 pl-8 border-3 border-foreground rounded-none currency text-lg"
                     value={expenseForm.amount}
                     onChange={(e) => setExpenseForm(prev => ({ ...prev, amount: e.target.value }))}
                     data-testid="expense-amount-input"
@@ -660,29 +681,30 @@ const GroupDetailPage = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="date">Date</Label>
+                <Label htmlFor="date" className="font-bold uppercase text-xs">Date</Label>
                 <Input
                   id="date"
                   type="date"
                   value={expenseForm.date}
                   onChange={(e) => setExpenseForm(prev => ({ ...prev, date: e.target.value }))}
+                  className="h-12 border-3 border-foreground rounded-none font-mono"
                   data-testid="expense-date-input"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label>Paid by *</Label>
+              <Label className="font-bold uppercase text-xs">Paid by *</Label>
               <Select 
                 value={expenseForm.paid_by} 
                 onValueChange={(value) => setExpenseForm(prev => ({ ...prev, paid_by: value }))}
               >
-                <SelectTrigger data-testid="expense-payer-select">
+                <SelectTrigger className="h-12 border-3 border-foreground rounded-none font-bold" data-testid="expense-payer-select">
                   <SelectValue placeholder="Who paid?" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="border-3 border-foreground rounded-none">
                   {group?.members?.map((member) => (
-                    <SelectItem key={member.user_id} value={member.user_id}>
+                    <SelectItem key={member.user_id} value={member.user_id} className="font-bold">
                       {member.name} {member.user_id === user?.id && '(you)'}
                     </SelectItem>
                   ))}
@@ -690,66 +712,64 @@ const GroupDetailPage = () => {
               </Select>
             </div>
 
-            <Separator />
-
-            <div className="space-y-2">
-              <Label>Split Type</Label>
+            <div className="border-t-3 border-foreground pt-4">
+              <Label className="font-bold uppercase text-xs">Split Type</Label>
               <Select 
                 value={expenseForm.split_type} 
                 onValueChange={recalculateSplits}
               >
-                <SelectTrigger data-testid="split-type-select">
+                <SelectTrigger className="h-12 border-3 border-foreground rounded-none font-bold mt-2" data-testid="split-type-select">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="equal">Split Equally</SelectItem>
-                  <SelectItem value="unequal">Exact Amounts</SelectItem>
-                  <SelectItem value="parts">By Parts</SelectItem>
-                  <SelectItem value="percentage">By Percentage</SelectItem>
+                <SelectContent className="border-3 border-foreground rounded-none">
+                  <SelectItem value="equal" className="font-bold">Split Equally</SelectItem>
+                  <SelectItem value="unequal" className="font-bold">Exact Amounts</SelectItem>
+                  <SelectItem value="parts" className="font-bold">By Parts</SelectItem>
+                  <SelectItem value="percentage" className="font-bold">By Percentage</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             {expenseForm.split_type !== 'equal' && (
-              <div className="space-y-3" data-testid="custom-splits">
-                <Label>
+              <div className="space-y-3 brutal-card p-4" data-testid="custom-splits">
+                <Label className="font-bold uppercase text-xs">
                   {expenseForm.split_type === 'percentage' ? 'Percentages' : 
                    expenseForm.split_type === 'parts' ? 'Parts' : 'Amounts'}
                 </Label>
-                {group?.members?.map((member) => {
+                {group?.members?.map((member, index) => {
                   const split = expenseForm.splits.find(s => s.user_id === member.user_id);
                   return (
                     <div key={member.user_id} className="flex items-center gap-3">
-                      <Avatar className="h-8 w-8">
-                        <AvatarFallback className="text-xs">{getInitials(member.name)}</AvatarFallback>
-                      </Avatar>
-                      <span className="flex-1 text-sm">{member.name}</span>
+                      <div className={`w-8 h-8 border-2 border-foreground flex items-center justify-center font-bold text-xs ${memberColors[index % memberColors.length]}`}>
+                        {getInitials(member.name)}
+                      </div>
+                      <span className="flex-1 font-bold text-sm">{member.name}</span>
                       <div className="relative w-24">
                         {expenseForm.split_type === 'unequal' && (
-                          <span className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">$</span>
+                          <span className="absolute left-2 top-1/2 -translate-y-1/2 font-bold text-sm">$</span>
                         )}
                         <Input
                           type="number"
                           step="0.01"
                           min="0"
-                          className={`h-9 ${expenseForm.split_type === 'unequal' ? 'pl-5' : ''} currency text-right`}
+                          className={`h-10 ${expenseForm.split_type === 'unequal' ? 'pl-6' : ''} border-3 border-foreground rounded-none currency text-right font-bold`}
                           value={split?.amount || ''}
                           onChange={(e) => updateSplitAmount(member.user_id, e.target.value)}
                           data-testid={`split-amount-${member.user_id}`}
                         />
                         {expenseForm.split_type === 'percentage' && (
-                          <span className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">%</span>
+                          <span className="absolute right-3 top-1/2 -translate-y-1/2 font-bold text-sm">%</span>
                         )}
                       </div>
                     </div>
                   );
                 })}
-                <div className="flex justify-between text-sm pt-2 border-t">
-                  <span className="text-muted-foreground">Total</span>
-                  <span className={`font-semibold currency ${
+                <div className="flex justify-between text-sm pt-3 border-t-2 border-foreground">
+                  <span className="font-bold uppercase text-xs">Total</span>
+                  <span className={`font-bold currency ${
                     Math.abs(expenseForm.splits.reduce((sum, s) => sum + s.amount, 0) - parseFloat(expenseForm.amount || 0)) > 0.01
-                      ? 'text-destructive'
-                      : ''
+                      ? 'text-red-500'
+                      : 'text-lime-600'
                   }`}>
                     {formatCurrency(expenseForm.splits.reduce((sum, s) => sum + s.amount, 0))}
                     {' / '}
@@ -759,39 +779,39 @@ const GroupDetailPage = () => {
               </div>
             )}
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowAddExpense(false)} className="rounded-full">
+          <DialogFooter className="gap-2">
+            <button onClick={() => setShowAddExpense(false)} className="brutal-btn-outline px-6 py-3">
               Cancel
-            </Button>
-            <Button onClick={handleAddExpense} disabled={isSubmitting} className="rounded-full" data-testid="add-expense-submit-btn">
+            </button>
+            <button onClick={handleAddExpense} disabled={isSubmitting} className="brutal-btn px-6 py-3" data-testid="add-expense-submit-btn">
               {isSubmitting ? 'Adding...' : 'Add Expense'}
-            </Button>
+            </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       {/* Settlement Dialog */}
       <Dialog open={showSettlement} onOpenChange={setShowSettlement}>
-        <DialogContent data-testid="settlement-dialog">
+        <DialogContent className="border-3 border-foreground rounded-none shadow-[8px_8px_0px_hsl(var(--foreground))] max-w-md" data-testid="settlement-dialog">
           <DialogHeader>
-            <DialogTitle>Record Settlement</DialogTitle>
-            <DialogDescription>
-              Record a payment between group members.
+            <DialogTitle className="text-2xl font-bold">Record Settlement</DialogTitle>
+            <DialogDescription className="font-mono text-sm">
+              Record a payment between group members
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label>Who paid?</Label>
+              <Label className="font-bold uppercase text-xs">Who paid?</Label>
               <Select 
                 value={settlementForm.from_user} 
                 onValueChange={(value) => setSettlementForm(prev => ({ ...prev, from_user: value }))}
               >
-                <SelectTrigger data-testid="settlement-from-select">
+                <SelectTrigger className="h-12 border-3 border-foreground rounded-none font-bold" data-testid="settlement-from-select">
                   <SelectValue placeholder="Select payer" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="border-3 border-foreground rounded-none">
                   {group?.members?.map((member) => (
-                    <SelectItem key={member.user_id} value={member.user_id}>
+                    <SelectItem key={member.user_id} value={member.user_id} className="font-bold">
                       {member.name}
                     </SelectItem>
                   ))}
@@ -800,17 +820,17 @@ const GroupDetailPage = () => {
             </div>
 
             <div className="space-y-2">
-              <Label>Who received?</Label>
+              <Label className="font-bold uppercase text-xs">Who received?</Label>
               <Select 
                 value={settlementForm.to_user} 
                 onValueChange={(value) => setSettlementForm(prev => ({ ...prev, to_user: value }))}
               >
-                <SelectTrigger data-testid="settlement-to-select">
+                <SelectTrigger className="h-12 border-3 border-foreground rounded-none font-bold" data-testid="settlement-to-select">
                   <SelectValue placeholder="Select receiver" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="border-3 border-foreground rounded-none">
                   {group?.members?.filter(m => m.user_id !== settlementForm.from_user).map((member) => (
-                    <SelectItem key={member.user_id} value={member.user_id}>
+                    <SelectItem key={member.user_id} value={member.user_id} className="font-bold">
                       {member.name}
                     </SelectItem>
                   ))}
@@ -819,16 +839,16 @@ const GroupDetailPage = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="settlement-amount">Amount</Label>
+              <Label htmlFor="settlement-amount" className="font-bold uppercase text-xs">Amount</Label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-lg">$</span>
                 <Input
                   id="settlement-amount"
                   type="number"
                   step="0.01"
                   min="0"
                   placeholder="0.00"
-                  className="pl-7 currency"
+                  className="h-12 pl-8 border-3 border-foreground rounded-none currency text-lg"
                   value={settlementForm.amount}
                   onChange={(e) => setSettlementForm(prev => ({ ...prev, amount: e.target.value }))}
                   data-testid="settlement-amount-input"
@@ -836,40 +856,38 @@ const GroupDetailPage = () => {
               </div>
             </div>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowSettlement(false)} className="rounded-full">
+          <DialogFooter className="gap-2">
+            <button onClick={() => setShowSettlement(false)} className="brutal-btn-outline px-6 py-3">
               Cancel
-            </Button>
-            <Button onClick={handleSettlement} disabled={isSubmitting} className="rounded-full" data-testid="settlement-submit-btn">
+            </button>
+            <button onClick={handleSettlement} disabled={isSubmitting} className="brutal-btn px-6 py-3" data-testid="settlement-submit-btn">
               {isSubmitting ? 'Recording...' : 'Record Payment'}
-            </Button>
+            </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       {/* Delete Group Dialog */}
       <Dialog open={showDeleteGroup} onOpenChange={setShowDeleteGroup}>
-        <DialogContent data-testid="delete-group-dialog">
+        <DialogContent className="border-3 border-foreground rounded-none shadow-[8px_8px_0px_hsl(var(--foreground))] max-w-md" data-testid="delete-group-dialog">
           <DialogHeader>
-            <DialogTitle>Delete Group</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to delete this group? This action cannot be undone.
-              All expenses and settlements will be permanently deleted.
+            <DialogTitle className="text-2xl font-bold text-red-600">Delete Group</DialogTitle>
+            <DialogDescription className="font-mono text-sm">
+              This action cannot be undone. All expenses and settlements will be permanently deleted.
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowDeleteGroup(false)} className="rounded-full">
+          <DialogFooter className="gap-2 mt-4">
+            <button onClick={() => setShowDeleteGroup(false)} className="brutal-btn-outline px-6 py-3">
               Cancel
-            </Button>
-            <Button 
-              variant="destructive" 
+            </button>
+            <button 
               onClick={handleDeleteGroup} 
               disabled={isSubmitting}
-              className="rounded-full"
+              className="brutal-btn bg-red-500 border-red-500 hover:bg-red-600 px-6 py-3"
               data-testid="delete-group-confirm-btn"
             >
-              {isSubmitting ? 'Deleting...' : 'Delete Group'}
-            </Button>
+              {isSubmitting ? 'Deleting...' : 'Delete Forever'}
+            </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
