@@ -7,6 +7,8 @@ import DashboardPage from './pages/DashboardPage';
 import GroupsPage from './pages/GroupsPage';
 import CreateGroupPage from './pages/CreateGroupPage';
 import GroupDetailPage from './pages/GroupDetailPage';
+import ActivityPage from './pages/ActivityPage';
+import SettingsPage from './pages/SettingsPage';
 import './App.css';
 
 // Protected Route wrapper
@@ -87,6 +89,22 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <GroupDetailPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/activity" 
+        element={
+          <ProtectedRoute>
+            <ActivityPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/settings" 
+        element={
+          <ProtectedRoute>
+            <SettingsPage />
           </ProtectedRoute>
         } 
       />
