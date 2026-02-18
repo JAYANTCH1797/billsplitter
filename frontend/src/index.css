@@ -104,53 +104,31 @@
         background: white;
         border: 3px solid hsl(var(--foreground));
         box-shadow: 6px 6px 0px hsl(var(--foreground));
-        transition: box-shadow 0.15s ease, transform 0.15s ease;
-    }
-
-    /* Only apply hover effects on devices that support hover (not touch) */
-    @media (hover: hover) and (pointer: fine) {
-        .brutal-card:hover {
-            box-shadow: 8px 8px 0px hsl(var(--foreground));
-            transform: translate(-2px, -2px);
-        }
-
-        .brutal-card:active {
-            box-shadow: 4px 4px 0px hsl(var(--foreground));
-            transform: translate(1px, 1px);
-        }
-    }
-
-    /* Touch devices - subtle tap feedback without transform */
-    @media (hover: none) {
-        .brutal-card:active {
-            box-shadow: 4px 4px 0px hsl(var(--foreground));
-            opacity: 0.9;
-        }
     }
 
     /* Colored variants */
     .brutal-card-lime {
         background: hsl(var(--lime));
-        border-color: hsl(var(--foreground));
+        border: 3px solid hsl(var(--foreground));
         box-shadow: 6px 6px 0px hsl(var(--foreground));
     }
 
     .brutal-card-yellow {
         background: hsl(var(--yellow));
-        border-color: hsl(var(--foreground));
+        border: 3px solid hsl(var(--foreground));
         box-shadow: 6px 6px 0px hsl(var(--foreground));
     }
 
     .brutal-card-violet {
         background: hsl(var(--violet));
         color: white;
-        border-color: hsl(var(--foreground));
+        border: 3px solid hsl(var(--foreground));
         box-shadow: 6px 6px 0px hsl(var(--foreground));
     }
 
     .brutal-card-coral {
         background: hsl(var(--coral));
-        border-color: hsl(var(--foreground));
+        border: 3px solid hsl(var(--foreground));
         box-shadow: 6px 6px 0px hsl(var(--foreground));
     }
 
