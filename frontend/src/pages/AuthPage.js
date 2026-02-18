@@ -108,19 +108,19 @@ const AuthPage = () => {
 
           {/* Features - Stack on mobile, row on desktop */}
           <div className="grid grid-cols-3 gap-2 sm:gap-4 mt-8 lg:mt-0 animate-enter delay-3">
-            <div className="brutal-card p-3 sm:p-4 wiggle-hover">
+            <div className="brutal-card p-3 sm:p-4">
               <Users className="w-6 h-6 sm:w-8 sm:h-8 mb-2 sm:mb-3" strokeWidth={2.5} />
               <h3 className="font-bold text-xs sm:text-sm uppercase">Groups</h3>
               <p className="text-[10px] sm:text-xs text-muted-foreground mt-1 hidden sm:block">Trips, roommates, events</p>
             </div>
             
-            <div className="brutal-card p-3 sm:p-4 wiggle-hover">
+            <div className="brutal-card p-3 sm:p-4">
               <PieChart className="w-6 h-6 sm:w-8 sm:h-8 mb-2 sm:mb-3" strokeWidth={2.5} />
               <h3 className="font-bold text-xs sm:text-sm uppercase">Split Any Way</h3>
               <p className="text-[10px] sm:text-xs text-muted-foreground mt-1 hidden sm:block">Equal, parts, or %</p>
             </div>
             
-            <div className="brutal-card p-3 sm:p-4 wiggle-hover">
+            <div className="brutal-card p-3 sm:p-4">
               <ArrowRight className="w-6 h-6 sm:w-8 sm:h-8 mb-2 sm:mb-3" strokeWidth={2.5} />
               <h3 className="font-bold text-xs sm:text-sm uppercase">Settle Up</h3>
               <p className="text-[10px] sm:text-xs text-muted-foreground mt-1 hidden sm:block">See who owes who</p>
