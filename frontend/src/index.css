@@ -232,13 +232,15 @@
         width: 100%;
     }
 
-    /* Bounce on hover */
+    /* Bounce on hover - only on non-touch devices */
     .bounce-hover {
         transition: transform 0.2s ease;
     }
 
-    .bounce-hover:hover {
-        animation: bounce 0.5s ease;
+    @media (hover: hover) and (pointer: fine) {
+        .bounce-hover:hover {
+            animation: bounce 0.5s ease;
+        }
     }
 
     @keyframes bounce {
@@ -246,14 +248,16 @@
         50% { transform: translateY(-8px); }
     }
 
-    /* Wiggle animation */
+    /* Wiggle animation - only on non-touch devices */
     @keyframes wiggle {
         0%, 100% { transform: rotate(-2deg); }
         50% { transform: rotate(2deg); }
     }
 
-    .wiggle-hover:hover {
-        animation: wiggle 0.3s ease-in-out;
+    @media (hover: hover) and (pointer: fine) {
+        .wiggle-hover:hover {
+            animation: wiggle 0.3s ease-in-out;
+        }
     }
 
     /* Entrance animations */
