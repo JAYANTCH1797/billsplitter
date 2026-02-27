@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>SplitSync — You're Offline</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Mono:wght@400;700&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #F8F8F5;
+      color: #0D0D0D;
+      font-family: 'Space Mono', monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .logo {
+      width: 64px;
+      height: 64px;
+      background: #0D0D0D;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+
+    .logo svg { width: 36px; height: 36px; }
+
+    .card {
+      background: white;
+      border: 2px solid #0D0D0D;
+      box-shadow: 6px 6px 0px #0D0D0D;
+      padding: 32px 24px;
+      max-width: 360px;
+      width: 100%;
+    }
+
+    .icon-box {
+      width: 72px;
+      height: 72px;
+      background: #FACC15;
+      border: 2px solid #0D0D0D;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 36px;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #737373;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 13px;
+      color: #737373;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #0D0D0D;
+      color: white;
+      border: 2px solid #0D0D0D;
+      padding: 12px 24px;
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.1s;
+    }
+
+    .btn:active { opacity: 0.85; }
+
+    .footer {
+      margin-top: 32px;
+      font-size: 10px;
+      color: #A0A0A0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+  <div class="logo">
+    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="4" width="28" height="28" fill="#FACC15" stroke="white" stroke-width="2"/>
+      <path d="M18 10L11 26H15L18 19L21 26H25L18 10Z" fill="#0D0D0D"/>
+    </svg>
+  </div>
+
+  <div class="card">
+    <div class="icon-box">📡</div>
+    <h1>You're Offline</h1>
+    <p class="subtitle">No connection detected</p>
+    <p>
+      SplitSync needs a connection to load your groups and expenses.
+      Check your Wi-Fi or mobile data and try again.
+    </p>
+    <button class="btn" onclick="window.location.reload()">
+      Try Again →
+    </button>
+  </div>
+
+  <p class="footer">SPLITSYNC • SPLIT BILLS WITH FRIENDS</p>
+</body>
+</html>

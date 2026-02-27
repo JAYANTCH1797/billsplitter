@@ -1,0 +1,7 @@
+The application should be compatible with both Android and iOS so either we turn this into flutter or React
+Allow users to save their information on their app 
+Allow users to add their friends on the group 
+Allow information storage on cloud so that the data is not lost when the app is uninstalled
+Allow users to create groups and add members to the group 
+To add a user in the initial go, we should create a unique joining URL so that the invited user can join (flow -> Create group -> craete a shareable link , user clicks on the link -> sings up and auto joins the group)
+Or We can create a notification centre of the app, when a user installs the app, on the notifcation centre, the user gets a notification "User X added you in Group Y - Click here to accept and Join" Once the user joins they are part of the groupd, they can now split and add bills whenever they want
